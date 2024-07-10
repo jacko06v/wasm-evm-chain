@@ -1,0 +1,30 @@
+[package]
+name = "xcm-tools"
+version = "0.7.0"
+description = "Astar XCM tools."
+build = "build.rs"
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "xcm-tools"
+path = "src/main.rs"
+
+[dependencies]
+astar-primitives = { workspace = true, features = ["std"] }
+clap = { workspace = true }
+cumulus-primitives-core = { workspace = true, features = ["std"] }
+polkadot-parachain = { workspace = true, features = ["std"] }
+polkadot-primitives = { workspace = true, features = ["std"] }
+sp-core = { workspace = true, features = ["std"] }
+sp-runtime = { workspace = true, features = ["std"] }
+xcm = { workspace = true, features = ["std"] }
+xcm-builder = { workspace = true, features = ["std"] }
+xcm-executor = { workspace = true, features = ["std"] }
+
+hex = { workspace = true }
+
+[build-dependencies]
+substrate-build-script-utils = { workspace = true }

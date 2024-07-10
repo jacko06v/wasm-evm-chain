@@ -1,0 +1,15 @@
+[Unit]
+Description=Astar node service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+RemainAfterExit=no
+Restart=on-failure
+RestartSec=5s
+User=astar
+ExecStart=/usr/local/bin/astar-collator
+
+[Install]
+WantedBy=multi-user.target

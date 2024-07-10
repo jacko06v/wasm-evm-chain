@@ -1,0 +1,201 @@
+[package]
+name = "astar-collator"
+version = "5.41.0"
+description = "Astar collator implementation in Rust."
+build = "build.rs"
+default-run = "astar-collator"
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "astar-collator"
+path = "bin/main.rs"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# third-party dependencies
+async-trait = { workspace = true }
+clap = { workspace = true }
+futures = { workspace = true }
+log = { workspace = true, features = ["std"] }
+parity-scale-codec = { workspace = true, features = ["std"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+url = { workspace = true }
+
+# primitives
+sp-api = { workspace = true, features = ["std"] }
+sp-block-builder = { workspace = true, features = ["std"] }
+sp-consensus-aura = { workspace = true, features = ["std"] }
+sp-core = { workspace = true, features = ["std"] }
+sp-inherents = { workspace = true, features = ["std"] }
+sp-io = { workspace = true, features = ["std"] }
+sp-offchain = { workspace = true, features = ["std"] }
+sp-runtime = { workspace = true, features = ["std"] }
+sp-session = { workspace = true, features = ["std"] }
+sp-transaction-pool = { workspace = true, features = ["std"] }
+
+sp-blockchain = { workspace = true }
+sp-consensus = { workspace = true }
+sp-keyring = { workspace = true, optional = true }
+sp-keystore = { workspace = true }
+sp-timestamp = { workspace = true }
+sp-trie = { workspace = true }
+
+# client dependencies
+sc-basic-authorship = { workspace = true }
+sc-chain-spec = { workspace = true }
+sc-client-api = { workspace = true }
+sc-client-db = { workspace = true }
+sc-consensus = { workspace = true }
+sc-consensus-aura = { workspace = true }
+sc-consensus-babe = { workspace = true }
+sc-consensus-grandpa = { workspace = true }
+sc-consensus-manual-seal = { workspace = true, optional = true }
+sc-executor = { workspace = true }
+sc-network = { workspace = true }
+sc-network-sync = { workspace = true }
+sc-offchain = { workspace = true }
+sc-rpc = { workspace = true }
+sc-service = { workspace = true }
+sc-telemetry = { workspace = true }
+sc-tracing = { workspace = true }
+sc-transaction-pool = { workspace = true }
+sc-transaction-pool-api = { workspace = true }
+substrate-prometheus-endpoint = { workspace = true }
+
+# RPC related dependencies
+jsonrpsee = { workspace = true }
+
+# Frontier dependencies
+fp-rpc = { workspace = true, features = ["std"] }
+pallet-ethereum = { workspace = true, features = ["std"] }
+pallet-evm = { workspace = true, features = ["std"] }
+
+fc-api = { workspace = true }
+fc-consensus = { workspace = true }
+fc-db = { workspace = true }
+fc-mapping-sync = { workspace = true }
+fc-rpc = { workspace = true }
+fc-rpc-core = { workspace = true }
+fc-storage = { workspace = true }
+fp-consensus = { workspace = true }
+fp-evm = { workspace = true, features = ["std"] }
+fp-storage = { workspace = true }
+
+# astar-specific dependencies
+
+local-runtime = { workspace = true, features = ["std"] }
+
+
+# astar pallets dependencies
+astar-primitives = { workspace = true }
+
+# frame dependencies
+frame-system = { workspace = true, features = ["std"] }
+pallet-transaction-payment = { workspace = true, features = ["std"] }
+pallet-transaction-payment-rpc = { workspace = true }
+substrate-frame-rpc-system = { workspace = true }
+
+# CLI-specific dependencies
+sc-cli = { workspace = true, optional = true }
+
+# cumulus dependencies
+cumulus-client-cli = { workspace = true }
+cumulus-client-collator = { workspace = true }
+cumulus-client-consensus-aura = { workspace = true }
+cumulus-client-consensus-common = { workspace = true }
+cumulus-client-consensus-proposer = { workspace = true }
+cumulus-client-consensus-relay-chain = { workspace = true }
+cumulus-client-network = { workspace = true }
+cumulus-client-service = { workspace = true }
+cumulus-primitives-core = { workspace = true, features = ["std"] }
+cumulus-primitives-parachain-inherent = { workspace = true }
+cumulus-relay-chain-inprocess-interface = { workspace = true }
+cumulus-relay-chain-interface = { workspace = true }
+cumulus-relay-chain-minimal-node = { workspace = true }
+cumulus-relay-chain-rpc-interface = { workspace = true }
+cumulus-test-relay-sproof-builder = { workspace = true }
+
+# polkadot dependencies
+polkadot-cli = { workspace = true, optional = true }
+polkadot-parachain = { workspace = true, features = ["std"] }
+polkadot-primitives = { workspace = true, features = ["std"] }
+polkadot-service = { workspace = true }
+
+# benchmark dependencies
+frame-benchmarking = { workspace = true, features = ["std"] }
+frame-benchmarking-cli = { workspace = true, optional = true }
+polkadot-runtime-common = { workspace = true, features = ["std"], optional = true }
+
+# try-runtime
+frame-try-runtime = { workspace = true, features = ["std"], optional = true }
+try-runtime-cli = { workspace = true, optional = true }
+
+# evm-tracing
+moonbeam-rpc-primitives-debug = { workspace = true, features = ["std"], optional = true }
+moonbeam-rpc-primitives-txpool = { workspace = true, features = ["std"], optional = true }
+
+moonbeam-primitives-ext = { workspace = true }
+moonbeam-rpc-debug = { workspace = true, optional = true }
+moonbeam-rpc-trace = { workspace = true, optional = true }
+moonbeam-rpc-txpool = { workspace = true, optional = true }
+
+[build-dependencies]
+polkadot-cli = { workspace = true, optional = true }
+sc-cli = { workspace = true, optional = true }
+sc-service = { workspace = true, optional = true }
+substrate-build-script-utils = { workspace = true }
+
+[features]
+default = ["sc-cli", "polkadot-cli", "sc-service", "sc-service/rocksdb"]
+runtime-benchmarks = [
+	"frame-benchmarking-cli",
+	"local-runtime/runtime-benchmarks",
+	"polkadot-cli/runtime-benchmarks",
+	"polkadot-runtime-common/std",
+	"sp-keyring",
+	"polkadot-runtime-common",
+	"astar-primitives/runtime-benchmarks",
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-benchmarking-cli?/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+	"pallet-ethereum/runtime-benchmarks",
+	"pallet-evm/runtime-benchmarks",
+	"polkadot-parachain/runtime-benchmarks",
+	"polkadot-primitives/runtime-benchmarks",
+	"polkadot-runtime-common?/runtime-benchmarks",
+	"polkadot-service/runtime-benchmarks",
+	"sc-client-db/runtime-benchmarks",
+	"sc-service/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
+]
+cli = ["try-runtime-cli"]
+try-runtime = [
+	"local-runtime/try-runtime",
+	"try-runtime-cli/try-runtime",
+	"astar-primitives/try-runtime",
+	"frame-system/try-runtime",
+	"frame-try-runtime/try-runtime",
+	"pallet-ethereum/try-runtime",
+	"pallet-evm/try-runtime",
+	"pallet-transaction-payment/try-runtime",
+	"polkadot-cli?/try-runtime",
+	"polkadot-runtime-common?/try-runtime",
+	"polkadot-service/try-runtime",
+	"sp-runtime/try-runtime",
+]
+evm-tracing = [
+	"moonbeam-rpc-debug",
+	"moonbeam-rpc-primitives-debug",
+	"moonbeam-rpc-primitives-txpool",
+	"moonbeam-rpc-trace",
+	"moonbeam-rpc-txpool",
+	"local-runtime/evm-tracing",
+]
+manual-seal = ["sc-consensus-manual-seal"]
