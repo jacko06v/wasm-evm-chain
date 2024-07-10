@@ -8,7 +8,15 @@
 
 rimosse tutte le parachain, rimasta solo la chain dev => solo-chain
 
-run with: 
+## server 
+run: 
+```
+./target/release/astar-collator --dev  --rpc-external
+```
+evm explorer: https://tryethernal.com/
+
+## local
+run: 
 ```
 ./target/release/astar-collator \
 --base-path /tmp/alice \
@@ -20,6 +28,7 @@ run with:
 --telemetry-url "wss://telemetry.polkadot.io/submit/ 0" \
 --validator
 ```
+explorer substrate: https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9945
 
 
 
