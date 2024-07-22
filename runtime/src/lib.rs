@@ -556,10 +556,7 @@ impl<F: FindAuthor<u32>> FindAuthor<H160> for FindAuthorTruncated<F> {
 
 parameter_types! {
     /// Ethereum-compatible chain_id:
-    /// * Dusty:   80
-    /// * Shibuya: 81
-    /// * Shiden: 336
-    /// * Local: 4369
+    /// * Local: 0x1111 = 4369
     pub ChainId: u64 = 0x1111;
     /// EVM gas limit
     pub BlockGasLimit: U256 = U256::from(

@@ -1,0 +1,37 @@
+{
+    "name": "dev",
+    "id": "637w",
+    "chainType": "Live",
+    "bootNodes": [],
+    "telemetryEndpoints": null,
+    "protocolId": "ctn",
+    "properties": null,
+    "ss58Format": 42,
+    "tokenDecimals": 12,
+    "tokenSymbol": "CTN",
+    "accounts": {
+        "balances": [
+            ["5F3sa2TJAWMqDhXG6jhV4N8ko9kVWy9T1ZGseFAqGizmCMN8", 1000000000000],
+            ["5FLSigC9H8AvnA92h8nHKUSmVt7zFJ3qa8yigUrBPh7S3sw6", 1000000000000]
+        ]
+    },
+    "genesis": {
+        "runtime": {
+            "babe": {
+                "authorities": []
+            },
+            "grandpa": {
+                "authorities": []
+            },
+            "imOnline": {
+                "keys": []
+            },
+            "session": {
+                "keys": []
+            },
+            "staking": {
+                "validatorCount": 7
+            }
+        }
+    }
+}

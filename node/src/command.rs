@@ -93,6 +93,10 @@ pub fn run() -> Result<()> {
     let cli = Cli::from_args();
 
     match &cli.subcommand {
+        Some(Subcommand::BuildSpec(cmd)) => {
+            let runner = cli.create_runner(cmd)?;
+            runner.sync_run(|config| cmd.run(config.chain_spec, config.network))
+        }
         Some(Subcommand::ExportGenesisWasm(cmd)) => {
             let runner = cli.create_runner(cmd)?;
 
