@@ -6,9 +6,9 @@
 
 </div>
 
-rimosse tutte le parachain, rimasta solo la chain dev => solo-chain
+removed all parachains - keeped dev chain => solochain
 
-## server 
+## if runned on an external server with public ip
 run: 
 ```
 ./target/release/astar-collator --dev  --rpc-external
