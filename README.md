@@ -42,8 +42,8 @@ explorer substrate: https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A994
 - collator-selection - staking a bond to became collator (just for parachain, maybe can be used for solo-chain)
 
 # TODO 
-check if the solo-chain dev can be used on production
-remove every unnecessary pallet
-remove parachains trace
+- check if the solo-chain dev can be used on production
+- remove every unnecessary pallet
+- remove parachains trace
 
 
