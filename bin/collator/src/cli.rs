@@ -16,8 +16,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Astar. If not, see <http://www.gnu.org/licenses/>.
 
-use clap::Parser;
-use std::path::PathBuf;
 
 #[cfg(feature = "evm-tracing")]
 use crate::evm_tracing_types::EthApiOptions;

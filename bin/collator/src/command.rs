@@ -21,18 +21,9 @@ use crate::{
     cli::{Cli, Subcommand},
     local::{self, development_config},
 };
-use cumulus_primitives_core::ParaId;
-use log::{error, info};
 use sc_cli::{
-    ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
-    NetworkParams, Result, SharedParams, SubstrateCli,
+       Result, SubstrateCli,
 };
-use sc_service::{
-    config::{BasePath, PrometheusConfig},
-    PartialComponents,
-};
-use sp_runtime::traits::AccountIdConversion;
-use std::net::SocketAddr;
 
 #[cfg(feature = "runtime-benchmarks")]
 use frame_benchmarking_cli::{BenchmarkCmd, ExtrinsicFactory, SUBSTRATE_REFERENCE_HARDWARE};
@@ -200,7 +191,7 @@ pub fn run() -> Result<()> {
             .into()),
         None => {
             let runner = cli.create_runner(&cli.run.normalize())?;
-            let collator_options = cli.run.collator_options();
+      
 
             #[cfg(feature = "evm-tracing")]
             let evm_tracing_config = crate::evm_tracing_types::EvmTracingConfig {

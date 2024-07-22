@@ -31,4 +31,15 @@ run:
 explorer substrate: https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9945
 
 
+## useful pallets
+
+- inflation - emit X tokens/year
+- dynamic-evm-base-fee - calc fees for ethereum like chain
+- XVM - run wasm and evm VMs
+- unified-accounts - it allows to use metamask ( and ethereum compatible tools like remix/hardhat) and polkadot apps like polkadot.js app
+
+## maybe useful
+- collator-selection - staking a bond to became collator (just for parachain, maybe can be used for solo-chain)
+
+
 

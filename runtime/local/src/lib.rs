@@ -63,12 +63,11 @@ use sp_runtime::{
     transaction_validity::{TransactionSource, TransactionValidity, TransactionValidityError},
     ApplyExtrinsicResult, FixedPointNumber, FixedU128, Perbill, Permill, Perquintill, RuntimeDebug,
 };
-use sp_std::{collections::btree_map::BTreeMap, prelude::*};
+use sp_std::prelude::*;
 
 use astar_primitives::{
     dapp_staking::{
-        CycleConfiguration, DAppId, EraNumber, PeriodNumber, RankedTier, SmartContract,
-        StandardTierSlots,
+        CycleConfiguration, EraNumber, PeriodNumber,
     },
     evm::{EvmRevertCodeHandler, HashedDefaultMappings},
     governance::{
@@ -83,7 +82,7 @@ use astar_primitives::{
 };
 
 pub use astar_primitives::{AccountId, Signature};
-pub use pallet_dapp_staking_v3::TierThreshold;
+
 
 pub use crate::precompiles::WhitelistedCalls;
 #[cfg(feature = "std")]
@@ -443,54 +442,13 @@ impl pallet_static_price_provider::Config for Runtime {
 
 #[cfg(feature = "runtime-benchmarks")]
 pub struct BenchmarkHelper<SC, ACC>(sp_std::marker::PhantomData<(SC, ACC)>);
-#[cfg(feature = "runtime-benchmarks")]
-impl pallet_dapp_staking_v3::BenchmarkHelper<SmartContract<AccountId>, AccountId>
-    for BenchmarkHelper<SmartContract<AccountId>, AccountId>
-{
-    fn get_smart_contract(id: u32) -> SmartContract<AccountId> {
-        SmartContract::Wasm(AccountId::from([id as u8; 32]))
-    }
 
-    fn set_balance(account: &AccountId, amount: Balance) {
-        use frame_support::traits::fungible::Unbalanced as FunUnbalanced;
-        Balances::write_balance(account, amount)
-            .expect("Must succeed in test/benchmark environment.");
-    }
-}
 
 parameter_types! {
     pub const BaseNativeCurrencyPrice: FixedU128 = FixedU128::from_rational(5, 100);
 }
 
-impl pallet_dapp_staking_v3::Config for Runtime {
-    type RuntimeEvent = RuntimeEvent;
-    type RuntimeFreezeReason = RuntimeFreezeReason;
-    type Currency = Balances;
-    type SmartContract = SmartContract<AccountId>;
-    type ContractRegisterOrigin = EnsureRootOrTwoThirdsCommunityCouncil;
-    type ContractUnregisterOrigin = EnsureRoot<AccountId>;
-    type ManagerOrigin = EnsureRootOrTwoThirdsTechnicalCommittee;
-    type NativePriceProvider = StaticPriceProvider;
-    type StakingRewardHandler = Inflation;
-    type CycleConfiguration = InflationCycleConfig;
-    type Observers = Inflation;
-    type AccountCheck = ();
-    type TierSlots = StandardTierSlots;
-    type BaseNativeCurrencyPrice = BaseNativeCurrencyPrice;
-    type EraRewardSpanLength = ConstU32<8>;
-    type RewardRetentionInPeriods = ConstU32<2>;
-    type MaxNumberOfContracts = ConstU32<100>;
-    type MaxUnlockingChunks = ConstU32<5>;
-    type MinimumLockedAmount = ConstU128<AST>;
-    type UnlockingPeriod = ConstU32<2>;
-    type MaxNumberOfStakedContracts = ConstU32<3>;
-    type MinimumStakeAmount = ConstU128<AST>;
-    type NumberOfTiers = ConstU32<4>;
-    type RankingEnabled = ConstBool<true>;
-    type WeightInfo = pallet_dapp_staking_v3::weights::SubstrateWeight<Runtime>;
-    #[cfg(feature = "runtime-benchmarks")]
-    type BenchmarkHelper = BenchmarkHelper<SmartContract<AccountId>, AccountId>;
-}
+
 
 pub struct InflationPayoutPerBlock;
 impl pallet_inflation::PayoutPerBlock<NegativeImbalance> for InflationPayoutPerBlock {
@@ -787,10 +745,6 @@ pub enum ProxyType {
     Assets,
     /// Only reject_announcement call from pallet proxy allowed for proxy account
     CancelProxy,
-    /// All runtime calls from pallet DappStaking allowed for proxy account
-    DappStaking,
-    /// Only claim_staker call from pallet DappStaking allowed for proxy account
-    StakerRewardClaim,
 }
 
 impl Default for ProxyType {
@@ -819,8 +773,6 @@ impl InstanceFilter<RuntimeCall> for ProxyType {
                         // Skip entire Balances pallet
                         | RuntimeCall::Vesting(pallet_vesting::Call::vest{..})
 				        | RuntimeCall::Vesting(pallet_vesting::Call::vest_other{..})
-				        // Specifically omitting Vesting `vested_transfer`, and `force_vested_transfer`
-                        | RuntimeCall::DappStaking(..)
                         // Skip entire EVM pallet
                         // Skip entire Ethereum pallet
                         | RuntimeCall::DynamicEvmBaseFee(..) // Skip entire Contracts pallet
@@ -841,18 +793,7 @@ impl InstanceFilter<RuntimeCall> for ProxyType {
                     RuntimeCall::Proxy(pallet_proxy::Call::reject_announcement { .. })
                 )
             }
-            // All runtime calls from pallet DappStaking allowed for proxy account
-            ProxyType::DappStaking => {
-                matches!(c, RuntimeCall::DappStaking(..))
-            }
-            ProxyType::StakerRewardClaim => {
-                matches!(
-                    c,
-                    RuntimeCall::DappStaking(
-                        pallet_dapp_staking_v3::Call::claim_staker_rewards { .. }
-                    )
-                )
-            }
+           
         }
     }
 
@@ -862,7 +803,6 @@ impl InstanceFilter<RuntimeCall> for ProxyType {
             (ProxyType::Any, _) => true,
             (_, ProxyType::Any) => false,
             (ProxyType::NonTransfer, _) => true,
-            (ProxyType::DappStaking, ProxyType::StakerRewardClaim) => true,
             _ => false,
         }
     }
@@ -1113,8 +1053,7 @@ impl InstanceFilter<RuntimeCall> for CommunityCouncilCallFilter {
     fn filter(&self, c: &RuntimeCall) -> bool {
         matches!(
             c,
-            RuntimeCall::DappStaking(..)
-                | RuntimeCall::System(frame_system::Call::remark { .. })
+             RuntimeCall::System(frame_system::Call::remark { .. })
                 | RuntimeCall::Utility(..)
         )
     }
@@ -1141,7 +1080,6 @@ construct_runtime!(
         TransactionPayment: pallet_transaction_payment = 30,
         Balances: pallet_balances = 31,
         Vesting: pallet_vesting = 32,
-        DappStaking: pallet_dapp_staking_v3 = 34,
         Inflation: pallet_inflation = 35,
         Assets: pallet_assets = 36,
         StaticPriceProvider: pallet_static_price_provider = 37,
@@ -1285,7 +1223,6 @@ mod benches {
         [pallet_balances, Balances]
         [pallet_timestamp, Timestamp]
         [pallet_ethereum_checked, EthereumChecked]
-        [pallet_dapp_staking_v3, DappStaking]
         [pallet_inflation, Inflation]
         [pallet_dynamic_evm_base_fee, DynamicEvmBaseFee]
     );
@@ -1772,28 +1709,6 @@ impl_runtime_apis! {
             key: Vec<u8>,
         ) -> pallet_contracts_primitives::GetStorageResult {
             Contracts::get_storage(address, key)
-        }
-    }
-
-    impl dapp_staking_v3_runtime_api::DappStakingApi<Block> for Runtime {
-        fn periods_per_cycle() -> PeriodNumber {
-            InflationCycleConfig::periods_per_cycle()
-        }
-
-        fn eras_per_voting_subperiod() -> EraNumber {
-            InflationCycleConfig::eras_per_voting_subperiod()
-        }
-
-        fn eras_per_build_and_earn_subperiod() -> EraNumber {
-            InflationCycleConfig::eras_per_build_and_earn_subperiod()
-        }
-
-        fn blocks_per_era() -> BlockNumber {
-            InflationCycleConfig::blocks_per_era()
-        }
-
-        fn get_dapp_tier_assignment() -> BTreeMap<DAppId, RankedTier> {
-            DappStaking::get_dapp_tier_assignment()
         }
     }
 

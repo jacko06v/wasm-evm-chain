@@ -633,43 +633,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "astar-test-utils"
-version = "0.1.0"
-dependencies = [
- "frame-support",
- "frame-system",
- "pallet-contracts",
- "pallet-contracts-primitives",
- "parity-scale-codec",
- "scale-info",
- "sp-runtime",
-]
-
-[[package]]
-name = "astar-xcm-benchmarks"
-version = "0.1.0"
-dependencies = [
- "astar-primitives",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "pallet-assets",
- "pallet-balances",
- "pallet-xcm-benchmarks",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
-]
-
-[[package]]
 name = "async-channel"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2240,64 +2203,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cumulus-pallet-parachain-system"
-version = "0.1.0"
-source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
-dependencies = [
- "bytes",
- "cumulus-pallet-parachain-system-proc-macro",
- "cumulus-primitives-core",
- "cumulus-primitives-parachain-inherent",
- "environmental",
- "frame-support",
- "frame-system",
- "impl-trait-for-tuples",
- "log",
- "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-parachains",
- "scale-info",
- "sp-core",
- "sp-externalities",
- "sp-inherents",
- "sp-io",
- "sp-runtime",
- "sp-state-machine",
- "sp-std",
- "sp-trie",
- "sp-version",
- "staging-xcm",
- "trie-db",
-]
-
-[[package]]
-name = "cumulus-pallet-parachain-system-proc-macro"
-version = "0.1.0"
-source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
-dependencies = [
- "proc-macro-crate 1.3.1",
- "proc-macro2",
- "quote",
- "syn 2.0.66",
-]
-
-[[package]]
-name = "cumulus-pallet-xcm"
-version = "0.1.0"
-source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
-dependencies = [
- "cumulus-primitives-core",
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "scale-info",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "staging-xcm",
-]
-
-[[package]]
 name = "cumulus-primitives-aura"
 version = "0.1.0"
 source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
@@ -2589,15 +2494,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.66",
-]
-
-[[package]]
-name = "dapp-staking-v3-runtime-api"
-version = "0.1.0"
-dependencies = [
- "astar-primitives",
- "sp-api",
- "sp-std",
 ]
 
 [[package]]
@@ -5270,57 +5166,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "integration-tests"
-version = "0.1.0"
-dependencies = [
- "assets-chain-extension-types",
- "astar-primitives",
- "astar-test-utils",
- "cumulus-pallet-parachain-system",
- "cumulus-primitives-core",
- "cumulus-primitives-parachain-inherent",
- "cumulus-test-relay-sproof-builder",
- "env_logger 0.10.2",
- "ethereum",
- "fp-evm",
- "fp-rpc",
- "frame-support",
- "frame-system",
- "hex",
- "libsecp256k1",
- "moonbeam-rpc-primitives-debug",
- "orml-oracle",
- "pallet-assets",
- "pallet-balances",
- "pallet-collator-selection",
- "pallet-collective-proxy",
- "pallet-contracts",
- "pallet-contracts-primitives",
- "pallet-dapp-staking-v3",
- "pallet-democracy",
- "pallet-ethereum",
- "pallet-ethereum-checked",
- "pallet-evm",
- "pallet-evm-precompile-assets-erc20",
- "pallet-evm-precompile-dispatch",
- "pallet-inflation",
- "pallet-membership",
- "pallet-price-aggregator",
- "pallet-proxy",
- "pallet-timestamp",
- "pallet-unified-accounts",
- "pallet-utility",
- "parity-scale-codec",
- "precompile-utils",
- "sha3",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-trie",
- "unified-accounts-chain-extension-types",
-]
-
-[[package]]
 name = "io-lifetimes"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6243,7 +6088,6 @@ version = "5.40.0"
 dependencies = [
  "array-bytes 6.2.3",
  "astar-primitives",
- "dapp-staking-v3-runtime-api",
  "fp-rpc",
  "fp-self-contained",
  "frame-benchmarking",
@@ -6268,7 +6112,6 @@ dependencies = [
  "pallet-collective-proxy",
  "pallet-contracts",
  "pallet-contracts-primitives",
- "pallet-dapp-staking-v3",
  "pallet-democracy",
  "pallet-dynamic-evm-base-fee",
  "pallet-ethereum",
@@ -6277,7 +6120,6 @@ dependencies = [
  "pallet-evm-precompile-assets-erc20",
  "pallet-evm-precompile-blake2",
  "pallet-evm-precompile-bn128",
- "pallet-evm-precompile-dapp-staking-v3",
  "pallet-evm-precompile-dispatch",
  "pallet-evm-precompile-dispatch-lockdrop",
  "pallet-evm-precompile-ed25519",
@@ -7483,42 +7325,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "orml-xcm-support"
-version = "0.6.7"
-source = "git+https://github.com/AstarNetwork/open-runtime-module-library?branch=polkadot-v1.3.0#18fe59659a5f3ce1b2432e3d273f559963b73517"
-dependencies = [
- "frame-support",
- "orml-traits",
- "parity-scale-codec",
- "sp-runtime",
- "sp-std",
- "staging-xcm",
- "staging-xcm-executor",
-]
-
-[[package]]
-name = "orml-xtokens"
-version = "0.6.7"
-source = "git+https://github.com/AstarNetwork/open-runtime-module-library?branch=polkadot-v1.3.0#18fe59659a5f3ce1b2432e3d273f559963b73517"
-dependencies = [
- "cumulus-primitives-core",
- "frame-support",
- "frame-system",
- "log",
- "orml-traits",
- "orml-xcm-support",
- "pallet-xcm",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "staging-xcm",
- "staging-xcm-executor",
-]
-
-[[package]]
 name = "pallet-asset-rate"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
@@ -7937,48 +7743,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-dapp-staking-migration"
-version = "1.0.0"
-dependencies = [
- "astar-primitives",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "pallet-balances",
- "pallet-dapp-staking-v3",
- "parity-scale-codec",
- "scale-info",
- "sp-arithmetic",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "pallet-dapp-staking-v3"
-version = "0.1.0"
-dependencies = [
- "assert_matches",
- "astar-primitives",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "num-traits",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-arithmetic",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
 name = "pallet-democracy"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
@@ -8191,34 +7955,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-evm-precompile-dapp-staking-v3"
-version = "0.1.0"
-dependencies = [
- "assert_matches",
- "astar-primitives",
- "derive_more",
- "fp-evm",
- "frame-support",
- "frame-system",
- "log",
- "num_enum 0.5.11",
- "pallet-balances",
- "pallet-dapp-staking-v3",
- "pallet-evm",
- "pallet-timestamp",
- "parity-scale-codec",
- "precompile-utils",
- "scale-info",
- "serde",
- "sha3",
- "sp-arithmetic",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
 name = "pallet-evm-precompile-dispatch"
 version = "2.0.0-dev"
 source = "git+https://github.com/AstarNetwork/frontier?branch=polkadot-v1.3.0#198d640a72a957ca94cdbee3c4416598dd45ec6d"
@@ -8369,41 +8105,6 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-std",
-]
-
-[[package]]
-name = "pallet-evm-precompile-xcm"
-version = "0.11.0"
-dependencies = [
- "assert_matches",
- "astar-primitives",
- "derive_more",
- "fp-evm",
- "frame-support",
- "frame-system",
- "hex-literal",
- "log",
- "num_enum 0.5.11",
- "orml-traits",
- "orml-xcm-support",
- "orml-xtokens",
- "pallet-assets",
- "pallet-balances",
- "pallet-evm",
- "pallet-evm-precompile-assets-erc20",
- "pallet-timestamp",
- "pallet-xcm",
- "parity-scale-codec",
- "precompile-utils",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
 ]
 
 [[package]]
@@ -16690,86 +16391,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.66",
-]
-
-[[package]]
-name = "xcm-simulator"
-version = "1.0.0"
-source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
-dependencies = [
- "frame-support",
- "parity-scale-codec",
- "paste",
- "polkadot-core-primitives",
- "polkadot-parachain-primitives",
- "polkadot-runtime-parachains",
- "sp-io",
- "sp-std",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
-]
-
-[[package]]
-name = "xcm-simulator-tests"
-version = "0.1.0"
-dependencies = [
- "assert_matches",
- "astar-primitives",
- "astar-test-utils",
- "cumulus-pallet-xcm",
- "frame-support",
- "frame-system",
- "log",
- "orml-traits",
- "orml-xcm-support",
- "orml-xtokens",
- "pallet-assets",
- "pallet-balances",
- "pallet-contracts",
- "pallet-contracts-primitives",
- "pallet-dapp-staking-v3",
- "pallet-insecure-randomness-collective-flip",
- "pallet-message-queue",
- "pallet-proxy",
- "pallet-timestamp",
- "pallet-utility",
- "pallet-xc-asset-config",
- "pallet-xcm",
- "parity-scale-codec",
- "polkadot-core-primitives",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-parachains",
- "scale-info",
- "smallvec",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "sp-tracing",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "xcm-simulator",
-]
-
-[[package]]
-name = "xcm-tools"
-version = "0.7.0"
-dependencies = [
- "astar-primitives",
- "clap",
- "cumulus-primitives-core",
- "hex",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "sp-core",
- "sp-runtime",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "substrate-build-script-utils",
 ]
 
 [[package]]
