@@ -34,12 +34,11 @@ evm = { workspace = true, features = ["with-codec"] }
 fp-evm = { workspace = true }
 pallet-evm = { workspace = true, features = ["forbid-evm-reentrancy"] }
 
-# Polkadot / XCM
-xcm = { workspace = true, optional = true }
+
 
 [dev-dependencies]
 hex-literal = { workspace = true }
-xcm = { workspace = true }
+
 
 [features]
 default = ["std"]
@@ -53,7 +52,6 @@ std = [
 	"sp-core/std",
 	"sp-io/std",
 	"sp-std/std",
-	"xcm?/std",
 	"evm/std",
 	"hex/std",
 	"log/std",
@@ -62,5 +60,4 @@ std = [
 	"serde?/std",
 	"sp-runtime/std",
 ]
-codec-xcm = ["xcm"]
 testing = ["derive_more", "hex-literal", "scale-info", "serde", "similar-asserts", "std"]

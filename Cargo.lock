@@ -619,7 +619,6 @@ dependencies = [
  "pallet-evm-precompile-dispatch",
  "pallet-membership",
  "pallet-treasury",
- "pallet-xc-asset-config",
  "parity-scale-codec",
  "scale-info",
  "sp-arithmetic",
@@ -627,9 +626,6 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-std",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
 ]
 
 [[package]]
@@ -6137,7 +6133,6 @@ dependencies = [
  "pallet-preimage",
  "pallet-proxy",
  "pallet-scheduler",
- "pallet-static-price-provider",
  "pallet-sudo",
  "pallet-timestamp",
  "pallet-transaction-payment",
@@ -7209,25 +7204,6 @@ name = "option-ext"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "04744f49eae99ab78e0d5c0b603ab218f515ea8cfe5a456d7629ad883a3b6e7d"
-
-[[package]]
-name = "oracle-benchmarks"
-version = "0.1.0"
-dependencies = [
- "astar-primitives",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "orml-oracle",
- "orml-traits",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-arithmetic",
- "sp-runtime",
- "sp-std",
-]
 
 [[package]]
 name = "orchestra"
@@ -8456,28 +8432,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-price-aggregator"
-version = "0.1.0"
-dependencies = [
- "astar-primitives",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "num-traits",
- "orml-traits",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-arithmetic",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
 name = "pallet-proxy"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
@@ -8689,26 +8643,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-static-price-provider"
-version = "0.1.0"
-dependencies = [
- "astar-primitives",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-arithmetic",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
 name = "pallet-sudo"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/polkadot-sdk?branch=release-polkadot-v1.3.0#c34bcf7e2bf5cba9cd141c790f4c144959d5a5a9"
@@ -8895,26 +8829,6 @@ dependencies = [
  "sp-api",
  "sp-runtime",
  "sp-std",
-]
-
-[[package]]
-name = "pallet-xc-asset-config"
-version = "1.3.0"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "pallet-balances",
- "pallet-timestamp",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "staging-xcm",
 ]
 
 [[package]]
@@ -10435,7 +10349,6 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-std",
- "staging-xcm",
 ]
 
 [[package]]

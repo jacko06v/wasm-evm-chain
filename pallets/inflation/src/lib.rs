@@ -99,8 +99,8 @@
 pub use pallet::*;
 
 use astar_primitives::{
-    dapp_staking::{
-        CycleConfiguration, EraNumber, Observer as DappStakingObserver, StakingRewardHandler,
+    inflation::{
+        CycleConfiguration, EraNumber
     },
     Balance,
 };
@@ -388,79 +388,9 @@ pub mod pallet {
 
             new_inflation_config
         }
-
-        /// Check if payout cap limit would be reached after payout.
-        fn is_payout_cap_limit_exceeded(payout: Balance) -> bool {
-            let config = ActiveInflationConfig::<T>::get();
-            let total_issuance = T::Currency::total_issuance();
-
-            let new_issuance = total_issuance.saturating_add(payout);
-
-            if new_issuance > config.issuance_safety_cap {
-                log::error!("Issuance cap has been exceeded. Please report this issue ASAP!");
-            }
-
-            // Allow for 1% safety cap overflow, to prevent bad UX for users in case of rounding errors.
-            // This will be removed in the future once we know everything is working as expected.
-            let relaxed_issuance_safety_cap = config
-                .issuance_safety_cap
-                .saturating_mul(101)
-                .saturating_div(100);
-
-            new_issuance > relaxed_issuance_safety_cap
-        }
     }
 
-    impl<T: Config> DappStakingObserver for Pallet<T> {
-        /// Informs the pallet that the next block will be the first block of a new era.
-        fn block_before_new_era(new_era: EraNumber) -> Weight {
-            let config = ActiveInflationConfig::<T>::get();
-            if config.recalculation_era <= new_era {
-                DoRecalculation::<T>::put(new_era);
-
-                // Need to account for write into a single whitelisted storage item.
-                T::WeightInfo::recalculation().saturating_add(T::DbWeight::get().writes(1))
-            } else {
-                Weight::zero()
-            }
-        }
-    }
-
-    impl<T: Config> StakingRewardHandler<T::AccountId> for Pallet<T> {
-        fn staker_and_dapp_reward_pools(total_value_staked: Balance) -> (Balance, Balance) {
-            let config = ActiveInflationConfig::<T>::get();
-            let total_issuance = T::Currency::total_issuance();
-
-            // First calculate the adjustable part of the staker reward pool, according to formula:
-            // adjustable_part = max_adjustable_part * min(1, total_staked_percent / ideal_staked_percent)
-            // (These operations are overflow & zero-division safe)
-            let staked_ratio = Perquintill::from_rational(total_value_staked, total_issuance);
-            let adjustment_factor = staked_ratio / config.ideal_staking_rate;
-
-            let adjustable_part = adjustment_factor * config.adjustable_staker_reward_pool_per_era;
-            let staker_reward_pool = config
-                .base_staker_reward_pool_per_era
-                .saturating_add(adjustable_part);
-
-            (staker_reward_pool, config.dapp_reward_pool_per_era)
-        }
-
-        fn bonus_reward_pool() -> Balance {
-            ActiveInflationConfig::<T>::get().bonus_reward_pool_per_period
-        }
-
-        fn payout_reward(account: &T::AccountId, reward: Balance) -> Result<(), ()> {
-            // This is a safety measure to prevent excessive minting.
-            ensure!(!Self::is_payout_cap_limit_exceeded(reward), ());
-
-            // This can fail only if the amount is below existential deposit & the account doesn't exist,
-            // or if the account has no provider references.
-            // In both cases, the reward is lost but this can be ignored since it's extremely unlikely
-            // to appear and doesn't bring any real harm.
-            T::Currency::deposit_creating(account, reward);
-            Ok(())
-        }
-    }
+   
 }
 
 /// Configuration of the inflation.

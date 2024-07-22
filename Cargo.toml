@@ -1,7 +1,7 @@
 [workspace]
 members = [
-	"bin/collator",
-	"runtime/local",
+	"node",
+	"runtime",
 
 
 	"pallets/*",
@@ -222,7 +222,6 @@ fc-storage = { git = "https://github.com/AstarNetwork/frontier", branch = "polka
 cumulus-pallet-aura-ext = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
 cumulus-pallet-dmp-queue = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
 cumulus-pallet-parachain-system = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
-cumulus-pallet-xcmp-queue = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
 cumulus-primitives-core = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
 cumulus-primitives-timestamp = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
 cumulus-primitives-utility = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
@@ -252,14 +251,6 @@ polkadot-core-primitives = { git = "https://github.com/paritytech/polkadot-sdk",
 polkadot-parachain = { package = "polkadot-parachain-primitives", git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
 polkadot-runtime-parachains = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
 
-# XCM
-# (wasm)
-cumulus-pallet-xcm = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
-xcm = { package = "staging-xcm", git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
-pallet-xcm = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
-pallet-xcm-benchmarks = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
-xcm-builder = { package = "staging-xcm-builder", git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
-xcm-executor = { package = "staging-xcm-executor", git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0", default-features = false }
 
 # (native)
 polkadot-cli = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.3.0" }
@@ -269,24 +260,17 @@ polkadot-service = { git = "https://github.com/paritytech/polkadot-sdk", branch 
 # (wasm)
 orml-xtokens = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.3.0", default-features = false }
 orml-traits = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.3.0", default-features = false }
-orml-xcm-support = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.3.0", default-features = false }
 orml-oracle = { git = "https://github.com/AstarNetwork/open-runtime-module-library", branch = "polkadot-v1.3.0", default-features = false }
 
 # Astar pallets & modules
 # (wasm)
 pallet-collator-selection = { path = "./pallets/collator-selection", default-features = false }
-pallet-xc-asset-config = { path = "./pallets/xc-asset-config", default-features = false }
 pallet-xvm = { path = "./pallets/xvm", default-features = false }
 pallet-ethereum-checked = { path = "./pallets/ethereum-checked", default-features = false }
 pallet-inflation = { path = "./pallets/inflation", default-features = false }
 pallet-dynamic-evm-base-fee = { path = "./pallets/dynamic-evm-base-fee", default-features = false }
 pallet-unified-accounts = { path = "./pallets/unified-accounts", default-features = false }
-pallet-static-price-provider = { path = "./pallets/static-price-provider", default-features = false }
-pallet-price-aggregator = { path = "./pallets/price-aggregator", default-features = false }
 pallet-collective-proxy = { path = "./pallets/collective-proxy", default-features = false }
-
-# Get rid of this once orml-oracle has been updated with benchmarks
-oracle-benchmarks = { path = "./pallets/oracle-benchmarks", default-features = false }
 
 
 astar-primitives = { path = "./primitives", default-features = false }
@@ -309,7 +293,7 @@ unified-accounts-chain-extension-types = { path = "./chain-extensions/types/unif
 
 precompile-utils = { path = "./precompiles/utils", default-features = false }
 
-local-runtime = { path = "./runtime/local", default-features = false }
+local-runtime = { path = "./runtime", default-features = false }
 
 ## Moonbeam tracing
 ## (wasm)

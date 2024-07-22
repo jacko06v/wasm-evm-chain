@@ -21,7 +21,7 @@
 //! Core Astar types.
 //!
 //! These core Astar types are used by the Shiden, Shibuya, Astar and Local runtime.
-pub mod xcm;
+
 
 /// Checked Ethereum transaction primitives.
 pub mod ethereum_checked;
@@ -35,14 +35,10 @@ pub mod evm;
 /// Precompiles
 pub mod precompiles;
 
-/// dApp staking & inflation primitives.
-pub mod dapp_staking;
+/// inflation primitives.
+pub mod inflation;
 
-/// Useful primitives for testing.
-pub mod testing;
 
-/// Oracle & price primitives.
-pub mod oracle;
 
 /// Governance primitives.
 pub mod governance;

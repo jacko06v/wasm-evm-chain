@@ -31,10 +31,9 @@ sp-io = { workspace = true }
 sp-runtime = { workspace = true }
 sp-std = { workspace = true }
 
-# XCM dependencies
-xcm = { workspace = true }
-xcm-builder = { workspace = true }
-xcm-executor = { workspace = true }
+
+
+
 
 # ORML dependencies
 orml-oracle = { workspace = true }
@@ -48,7 +47,7 @@ pallet-evm = { workspace = true }
 # Astar pallets & dependencies
 pallet-evm-precompile-assets-erc20 = { workspace = true }
 pallet-evm-precompile-dispatch = { workspace = true }
-pallet-xc-asset-config = { workspace = true }
+
 
 [features]
 default = ["std"]
@@ -68,12 +67,9 @@ std = [
 	"sp-runtime/std",
 	"sp-core/std",
 	"sp-io/std",
-	"xcm/std",
-	"xcm-builder/std",
-	"xcm-executor/std",
+
 	"orml-oracle/std",
 	"orml-traits/std",
-	"pallet-xc-asset-config/std",
 	"fp-evm/std",
 	"pallet-assets/std",
 	"pallet-evm/std",
@@ -83,16 +79,15 @@ std = [
 	"sp-arithmetic/std",
 ]
 runtime-benchmarks = [
-	"xcm-builder/runtime-benchmarks",
+
 	"pallet-assets/runtime-benchmarks",
 	"frame-support/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
 	"pallet-contracts/runtime-benchmarks",
 	"pallet-evm/runtime-benchmarks",
 	"pallet-evm-precompile-assets-erc20/runtime-benchmarks",
-	"pallet-xc-asset-config/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
-	"xcm-executor/runtime-benchmarks",
+
 	"pallet-collective/runtime-benchmarks",
 	"pallet-membership/runtime-benchmarks",
 	"pallet-treasury/runtime-benchmarks",
@@ -104,7 +99,6 @@ try-runtime = [
 	"orml-oracle/try-runtime",
 	"pallet-assets/try-runtime",
 	"pallet-evm/try-runtime",
-	"pallet-xc-asset-config/try-runtime",
 	"sp-runtime/try-runtime",
 	"pallet-collective/try-runtime",
 	"pallet-membership/try-runtime",

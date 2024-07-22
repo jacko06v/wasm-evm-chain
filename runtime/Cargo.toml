@@ -80,7 +80,6 @@ pallet-evm-precompile-substrate-ecdsa = { workspace = true }
 pallet-evm-precompile-unified-accounts = { workspace = true }
 pallet-evm-precompile-xvm = { workspace = true }
 pallet-inflation = { workspace = true }
-pallet-static-price-provider = { workspace = true }
 pallet-unified-accounts = { workspace = true }
 pallet-xvm = { workspace = true }
 
@@ -126,7 +125,6 @@ std = [
 	"pallet-chain-extension-xvm/std",
 	"pallet-chain-extension-unified-accounts/std",
 	"pallet-inflation/std",
-	"pallet-static-price-provider/std",
 	"pallet-dynamic-evm-base-fee/std",
 	"pallet-ethereum/std",
 	"pallet-evm/std",
@@ -217,7 +215,6 @@ runtime-benchmarks = [
 	"pallet-grandpa/runtime-benchmarks",
 	"pallet-proxy/runtime-benchmarks",
 	"pallet-scheduler/runtime-benchmarks",
-	"pallet-static-price-provider/runtime-benchmarks",
 	"pallet-sudo/runtime-benchmarks",
 	"pallet-utility/runtime-benchmarks",
 	"pallet-vesting/runtime-benchmarks",
@@ -256,7 +253,6 @@ try-runtime = [
 	"pallet-dynamic-evm-base-fee/try-runtime",
 	"pallet-evm/try-runtime",
 	"pallet-ethereum-checked/try-runtime",
-	"pallet-static-price-provider/try-runtime",
 	"astar-primitives/try-runtime",
 	"pallet-chain-extension-assets/try-runtime",
 	"sp-runtime/try-runtime",

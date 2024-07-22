@@ -120,7 +120,6 @@ pub type LocalPrecompilesSetAt<R> = (
         SubstrateEcdsaPrecompile<R>,
         (CallableByContract, CallableByPrecompile),
     >,
-    // skip 20484 for xcm precompile
     PrecompileAt<
         AddressU64<20485>,
         XvmPrecompile<R, pallet_xvm::Pallet<R>>,

@@ -66,7 +66,7 @@ use sp_runtime::{
 use sp_std::prelude::*;
 
 use astar_primitives::{
-    dapp_staking::{
+    inflation::{
         CycleConfiguration, EraNumber, PeriodNumber,
     },
     evm::{EvmRevertCodeHandler, HashedDefaultMappings},
@@ -436,9 +436,6 @@ parameter_types! {
 
 type NegativeImbalance = <Balances as Currency<AccountId>>::NegativeImbalance;
 
-impl pallet_static_price_provider::Config for Runtime {
-    type RuntimeEvent = RuntimeEvent;
-}
 
 #[cfg(feature = "runtime-benchmarks")]
 pub struct BenchmarkHelper<SC, ACC>(sp_std::marker::PhantomData<(SC, ACC)>);
@@ -1082,7 +1079,7 @@ construct_runtime!(
         Vesting: pallet_vesting = 32,
         Inflation: pallet_inflation = 35,
         Assets: pallet_assets = 36,
-        StaticPriceProvider: pallet_static_price_provider = 37,
+
 
         Aura: pallet_aura = 43,
         Grandpa: pallet_grandpa = 44,
