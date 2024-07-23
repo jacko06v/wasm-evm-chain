@@ -83,6 +83,7 @@ use astar_primitives::{
 
 pub use astar_primitives::{AccountId, Signature};
 
+pub use pallet_uomi_engine;
 
 pub use crate::precompiles::WhitelistedCalls;
 #[cfg(feature = "std")]
@@ -153,7 +154,7 @@ pub const fn deposit(items: u32, bytes: u32) -> Balance {
 /// up by `pallet_aura` to implement `fn slot_duration()`.
 ///
 /// Change this to adjust the block time.
-pub const MILLISECS_PER_BLOCK: u64 = 2000;
+pub const MILLISECS_PER_BLOCK: u64 = 3000;
 pub const SLOT_DURATION: u64 = MILLISECS_PER_BLOCK;
 
 // Time is measured by number of blocks.
@@ -883,6 +884,11 @@ impl pallet_collective::Config<MainCouncilCollectiveInst> for Runtime {
     type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
 }
 
+impl pallet_uomi_engine::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = pallet_uomi_engine::weights::SubstrateWeight<Runtime>;
+}
+
 impl pallet_collective::Config<TechnicalCommitteeCollectiveInst> for Runtime {
     type RuntimeOrigin = RuntimeOrigin;
     type Proposal = RuntimeCall;
@@ -1102,6 +1108,7 @@ construct_runtime!(
         Treasury: pallet_treasury::<Instance1> = 107,
         CommunityTreasury: pallet_treasury::<Instance2> = 108,
         CollectiveProxy: pallet_collective_proxy = 109,
+        UomiEngine: pallet_uomi_engine = 110
     }
 );
 
@@ -1219,6 +1226,7 @@ mod benches {
         [pallet_ethereum_checked, EthereumChecked]
         [pallet_inflation, Inflation]
         [pallet_dynamic_evm_base_fee, DynamicEvmBaseFee]
+        [pallet_uomi_engine, TemplateModule]
     );
 }
 

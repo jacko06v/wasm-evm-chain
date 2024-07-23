@@ -86,7 +86,7 @@ derive_more = { version = "0.99" }
 proc-macro2 = "1.0"
 quote = "1.0"
 syn = { version = "1.0" }
-ethers = { version = "2.0.9", default_features = false }
+ethers = { version = "2.0.9", default-features = false }
 
 # Substrate
 # (wasm)
@@ -244,7 +244,7 @@ pallet-inflation = { path = "./pallets/inflation", default-features = false }
 pallet-dynamic-evm-base-fee = { path = "./pallets/dynamic-evm-base-fee", default-features = false }
 pallet-unified-accounts = { path = "./pallets/unified-accounts", default-features = false }
 pallet-collective-proxy = { path = "./pallets/collective-proxy", default-features = false }
-
+pallet-uomi-engine = { path = "./pallets/uomi-engine", default-features = false, version = "0.1.0" }
 
 astar-primitives = { path = "./primitives", default-features = false }
 astar-test-utils = { path = "./tests/utils", default-features = false }

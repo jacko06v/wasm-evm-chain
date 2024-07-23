@@ -155,7 +155,6 @@ pub fn run() -> Result<()> {
             use sp_keyring::Sr25519Keyring;
 
             let runner = cli.create_runner(cmd)?;
-            let chain_spec = &runner.config().chain_spec;
 
             match cmd {
                 BenchmarkCmd::Pallet(cmd) => {

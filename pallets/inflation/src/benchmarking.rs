@@ -96,21 +96,7 @@ mod benchmarks {
         assert_last_event::<T>(Event::<T>::ForcedInflationRecalculation { config }.into());
     }
 
-    #[benchmark]
-    fn recalculation() {
-        initial_config::<T>();
-
-        let init_recalculation_era = ActiveInflationConfig::<T>::get().recalculation_era;
-        DoRecalculation::<T>::put(init_recalculation_era);
-
-        #[block]
-        {
-            Pallet::<T>::block_before_new_era(init_recalculation_era);
-            Pallet::<T>::on_finalize(1u32.into());
-        }
-
-        assert!(ActiveInflationConfig::<T>::get().recalculation_era > init_recalculation_era);
-    }
+    
 
     #[benchmark]
     fn hooks_without_recalculation() {

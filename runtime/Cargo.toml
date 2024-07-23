@@ -48,6 +48,7 @@ pallet-transaction-payment = { workspace = true }
 pallet-treasury = { workspace = true }
 pallet-utility = { workspace = true }
 pallet-vesting = { workspace = true }
+pallet-uomi-engine = { workspace = true }
 sp-api = { workspace = true }
 sp-arithmetic = { workspace = true }
 sp-block-builder = { workspace = true }
@@ -173,6 +174,7 @@ std = [
 	"pallet-xvm/std",
 	"pallet-unified-accounts/std",
 	"pallet-ethereum-checked/std",
+	"pallet-uomi-engine/std",
 	"moonbeam-evm-tracer/std",
 	"moonbeam-rpc-primitives-debug/std",
 	"moonbeam-rpc-primitives-txpool/std",
@@ -197,6 +199,7 @@ runtime-benchmarks = [
 	"pallet-timestamp/runtime-benchmarks",
 	"pallet-treasury/runtime-benchmarks",
 	"pallet-ethereum/runtime-benchmarks",
+	"pallet-uomi-engine/runtime-benchmarks",
 	"pallet-preimage/runtime-benchmarks",
 	"pallet-democracy/runtime-benchmarks",
 	"pallet-collective/runtime-benchmarks",
@@ -233,6 +236,7 @@ try-runtime = [
 	"pallet-collective-proxy/try-runtime",
 	"pallet-treasury/try-runtime",
 	"pallet-inflation/try-runtime",
+	"pallet-uomi-engine/try-runtime",
 	"pallet-membership/try-runtime",
 	"pallet-grandpa/try-runtime",
 	"pallet-insecure-randomness-collective-flip/try-runtime",
