@@ -238,7 +238,6 @@ orml-oracle = { git = "https://github.com/AstarNetwork/open-runtime-module-libra
 
 # Astar pallets & modules
 # (wasm)
-pallet-collator-selection = { path = "./pallets/collator-selection", default-features = false }
 pallet-xvm = { path = "./pallets/xvm", default-features = false }
 pallet-ethereum-checked = { path = "./pallets/ethereum-checked", default-features = false }
 pallet-inflation = { path = "./pallets/inflation", default-features = false }

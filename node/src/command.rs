@@ -24,10 +24,7 @@ use crate::{
 use sc_cli::{
        Result, SubstrateCli,
 };
-use sc_service::{
-    config::{BasePath, PrometheusConfig},
-    PartialComponents,
-};
+use sc_service::PartialComponents;
 
 #[cfg(feature = "runtime-benchmarks")]
 use frame_benchmarking_cli::{BenchmarkCmd, ExtrinsicFactory, SUBSTRATE_REFERENCE_HARDWARE};
