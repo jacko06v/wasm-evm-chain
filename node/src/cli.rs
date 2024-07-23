@@ -19,6 +19,7 @@
 
 #[cfg(feature = "evm-tracing")]
 use crate::evm_tracing_types::EthApiOptions;
+use sc_cli::RunCmd;
 
 /// An overarching CLI command definition.
 #[derive(Debug, clap::Parser)]
@@ -29,7 +30,7 @@ pub struct Cli {
 
     #[allow(missing_docs)]
     #[clap(flatten)]
-    pub run: cumulus_client_cli::RunCmd,
+    pub run: RunCmd,
 
     #[allow(missing_docs)]
     #[cfg(feature = "evm-tracing")]
@@ -39,10 +40,6 @@ pub struct Cli {
     /// Enable Ethereum compatible JSON-RPC servers (disabled by default).
     #[clap(name = "enable-evm-rpc", long)]
     pub enable_evm_rpc: bool,
-
-    /// Relaychain arguments
-    #[clap(raw = true)]
-    pub relaychain_args: Vec<String>,
 
     /// Proposer's maximum block size limit in bytes
     #[clap(long, default_value = sc_basic_authorship::DEFAULT_BLOCK_SIZE_LIMIT.to_string())]
@@ -85,16 +82,10 @@ pub enum Subcommand {
     ImportBlocks(sc_cli::ImportBlocksCmd),
 
     /// Remove the whole chain.
-    PurgeChain(cumulus_client_cli::PurgeChainCmd),
+    PurgeChain(sc_cli::PurgeChainCmd),
 
     /// Revert the chain to a previous state.
     Revert(sc_cli::RevertCmd),
-
-    /// Export the genesis state of the parachain.
-    ExportGenesisState(cumulus_client_cli::ExportGenesisStateCommand),
-
-    /// Export the genesis wasm of the parachain.
-    ExportGenesisWasm(cumulus_client_cli::ExportGenesisWasmCommand),
 
     /// The custom benchmark subcommmand benchmarking runtime pallets.
     #[cfg(feature = "runtime-benchmarks")]

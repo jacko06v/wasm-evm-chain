@@ -24,6 +24,10 @@ use crate::{
 use sc_cli::{
        Result, SubstrateCli,
 };
+use sc_service::{
+    config::{BasePath, PrometheusConfig},
+    PartialComponents,
+};
 
 #[cfg(feature = "runtime-benchmarks")]
 use frame_benchmarking_cli::{BenchmarkCmd, ExtrinsicFactory, SUBSTRATE_REFERENCE_HARDWARE};
@@ -63,9 +67,9 @@ impl SubstrateCli for Cli {
     fn description() -> String {
         format!(
             "Astar Collator\n\nThe command-line arguments provided first will be \
-        passed to the parachain node, while the arguments provided after -- will be passed \
+        passed to the chain node, while the arguments provided after -- will be passed \
         to the relaychain node.\n\n\
-        {} [parachain-args] -- [relaychain-args]",
+        {} [chain-args]",
             Self::executable_name()
         )
     }
@@ -97,14 +101,53 @@ pub fn run() -> Result<()> {
             let runner = cli.create_runner(cmd)?;
             runner.sync_run(|config| cmd.run(config.chain_spec, config.network))
         }
-        Some(Subcommand::ExportGenesisWasm(cmd)) => {
-            let runner = cli.create_runner(cmd)?;
-
-            runner.sync_run(|_config| {
-                let spec = cli.load_spec(&cmd.shared_params.chain.clone().unwrap_or_default())?;
-                cmd.run(&*spec)
-            })
-        }
+        Some(Subcommand::CheckBlock(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			runner.async_run(|config| {
+				let PartialComponents { client, task_manager, import_queue, .. } =
+					local::new_partial(&config)?;
+				Ok((cmd.run(client, import_queue), task_manager))
+			})
+		},
+        Some(Subcommand::ExportBlocks(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			runner.async_run(|config| {
+				let PartialComponents { client, task_manager, .. } = local::new_partial(&config)?;
+				Ok((cmd.run(client, config.database), task_manager))
+			})
+		},
+        Some(Subcommand::ExportState(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			runner.async_run(|config| {
+				let PartialComponents { client, task_manager, .. } = local::new_partial(&config)?;
+				Ok((cmd.run(client, config.chain_spec), task_manager))
+			})
+		},
+		Some(Subcommand::ImportBlocks(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			runner.async_run(|config| {
+				let PartialComponents { client, task_manager, import_queue, .. } =
+					local::new_partial(&config)?;
+				Ok((cmd.run(client, import_queue), task_manager))
+			})
+		},
+		// Some(Subcommand::PurgeChain(cmd)) => {
+        //     let runner = cli.create_runner(cmd)?;
+		// 	runner.sync_run(|config| cmd.run(config.database))
+			
+		// },
+        Some(Subcommand::Revert(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			runner.async_run(|config| {
+				let PartialComponents { client, task_manager, backend, .. } =
+					local::new_partial(&config)?;
+				let aux_revert = Box::new(|client, _, blocks| {
+					sc_consensus_grandpa::revert(client, blocks)?;
+					Ok(())
+				});
+				Ok((cmd.run(client, backend, Some(aux_revert)), task_manager))
+			})
+		},
         Some(Subcommand::Key(cmd)) => cmd.run(&cli),
         Some(Subcommand::Sign(cmd)) => cmd.run(),
         Some(Subcommand::Verify(cmd)) => cmd.run(),
@@ -194,7 +237,7 @@ pub fn run() -> Result<()> {
         Please remove this subcommand from your runtime and use the standalone CLI."
             .into()),
         None => {
-            let runner = cli.create_runner(&cli.run.normalize())?;
+            let runner = cli.create_runner(&cli.run)?;
       
 
             #[cfg(feature = "evm-tracing")]

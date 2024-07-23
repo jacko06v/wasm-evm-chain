@@ -47,5 +47,6 @@ explorer substrate: https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A994
 - check if the solo-chain dev can be used on production
 - remove every unnecessary pallet
 - remove parachains trace
+- *IMPORTANT* Implement purgechain subcommand
 
 
