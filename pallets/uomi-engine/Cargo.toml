@@ -23,7 +23,7 @@ log = { workspace = true }
 sp-std = { workspace = true }
 sp-runtime = { workspace = true }
 sp-io = { workspace = true }
-wasmi = { version = "0.31.2", default-features = false }
+wasmi = { version = "0.35", default-features = false }
 
 # frame deps
 frame-benchmarking = { workspace = true }

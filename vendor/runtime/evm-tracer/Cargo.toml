@@ -8,7 +8,6 @@ repository = "https://github.com/PureStake/moonbeam/"
 version = "0.1.0"
 
 [dependencies]
-
 # Moonbeam
 evm-tracing-events = { workspace = true, features = ["evm-tracing"] }
 moonbeam-primitives-ext = { workspace = true }
