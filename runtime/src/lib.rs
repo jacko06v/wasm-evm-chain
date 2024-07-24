@@ -233,6 +233,8 @@ impl frame_system::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
     /// The ubiquitous origin type.
     type RuntimeOrigin = RuntimeOrigin;
+    /// The aggregated RuntimeTask type.
+    type RuntimeTask = RuntimeTask;
     /// Maximum number of block number to block hash mappings to keep (oldest pruned first).
     type BlockHashCount = BlockHashCount;
     /// The weight of database operations that the runtime can invoke.
@@ -256,6 +258,11 @@ impl frame_system::Config for Runtime {
     /// The set code logic, just the default since we're not a parachain.
     type OnSetCode = ();
     type MaxConsumers = frame_support::traits::ConstU32<16>;
+    type SingleBlockMigrations = ();
+    type MultiBlockMigrator = ();
+    type PreInherents = ();
+    type PostInherents = ();
+    type PostTransactions = ();
 }
 
 parameter_types! {
@@ -316,7 +323,6 @@ impl pallet_balances::Config for Runtime {
     type RuntimeHoldReason = RuntimeHoldReason;
     type RuntimeFreezeReason = RuntimeFreezeReason;
     type FreezeIdentifier = RuntimeFreezeReason;
-    type MaxHolds = ConstU32<2>;
     type MaxFreezes = ConstU32<1>;
 }
 
@@ -659,6 +665,7 @@ impl pallet_vesting::Config for Runtime {
     type MinVestedTransfer = MinVestedTransfer;
     type WeightInfo = pallet_vesting::weights::SubstrateWeight<Runtime>;
     type UnvestedFundsAllowedWithdrawReasons = UnvestedFundsAllowedWithdrawReasons;
+    type BlockNumberProvider = System;
     // `VestingInfo` encode length is 36bytes. 28 schedules gets encoded as 1009 bytes, which is the
     // highest number of schedules that encodes less than 2^10.
     const MAX_VESTING_SCHEDULES: u32 = 28;
@@ -706,6 +713,10 @@ impl pallet_contracts::Config for Runtime {
     type Debug = ();
     type Environment = ();
     type Migrations = ();
+    type Xcm = ();
+    type UploadOrigin = EnsureSigned<<Self as frame_system::Config>::AccountId>;
+    type InstantiateOrigin = EnsureSigned<<Self as frame_system::Config>::AccountId>;
+    type ApiVersion = ();
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -1127,6 +1138,7 @@ pub type SignedExtra = (
     frame_system::CheckNonce<Runtime>,
     frame_system::CheckWeight<Runtime>,
     pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+    frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
 );
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic =
@@ -1219,7 +1231,7 @@ extern crate frame_benchmarking;
 mod benches {
     define_benchmarks!(
         [frame_benchmarking, BaselineBench::<Runtime>]
-        [pallet_assets, Assets]
+        [pallet_assets, pallet_assets::Pallet::<Runtime>]
         [frame_system, SystemBench::<Runtime>]
         [pallet_balances, Balances]
         [pallet_timestamp, Timestamp]
@@ -1240,7 +1252,7 @@ impl_runtime_apis! {
             Executive::execute_block(block);
         }
 
-        fn initialize_block(header: &<Block as BlockT>::Header) {
+        fn initialize_block(header: &<Block as BlockT>::Header) -> sp_runtime::ExtrinsicInclusionMode {
             Executive::initialize_block(header)
         }
     }
@@ -1658,7 +1670,7 @@ impl_runtime_apis! {
             gas_limit: Option<Weight>,
             storage_deposit_limit: Option<Balance>,
             input_data: Vec<u8>,
-        ) -> pallet_contracts_primitives::ContractExecResult<Balance, EventRecord> {
+        ) -> pallet_contracts::ContractExecResult<Balance, EventRecord> {
             let gas_limit = gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block);
             Contracts::bare_call(
                 origin,
@@ -1678,10 +1690,10 @@ impl_runtime_apis! {
             value: Balance,
             gas_limit: Option<Weight>,
             storage_deposit_limit: Option<Balance>,
-            code: pallet_contracts_primitives::Code<Hash>,
+            code: pallet_contracts::Code<Hash>,
             data: Vec<u8>,
             salt: Vec<u8>,
-        ) -> pallet_contracts_primitives::ContractInstantiateResult<AccountId, Balance, EventRecord> {
+        ) -> pallet_contracts::ContractInstantiateResult<AccountId, Balance, EventRecord> {
             let gas_limit = gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block);
             Contracts::bare_instantiate(
                 origin,
@@ -1701,7 +1713,7 @@ impl_runtime_apis! {
             code: Vec<u8>,
             storage_deposit_limit: Option<Balance>,
             determinism: pallet_contracts::Determinism,
-        ) -> pallet_contracts_primitives::CodeUploadResult<Hash, Balance>
+        ) -> pallet_contracts::CodeUploadResult<Hash, Balance>
         {
             Contracts::bare_upload_code(origin, code, storage_deposit_limit, determinism)
         }
@@ -1709,7 +1721,7 @@ impl_runtime_apis! {
         fn get_storage(
             address: AccountId,
             key: Vec<u8>,
-        ) -> pallet_contracts_primitives::GetStorageResult {
+        ) -> pallet_contracts::GetStorageResult {
             Contracts::get_storage(address, key)
         }
     }
@@ -1771,11 +1783,16 @@ impl_runtime_apis! {
         fn trace_transaction(
             extrinsics: Vec<<Block as BlockT>::Extrinsic>,
             traced_transaction: &pallet_ethereum::Transaction,
+            header: &<Block as BlockT>::Header,
         ) -> Result<
             (),
             sp_runtime::DispatchError,
         > {
             use moonbeam_evm_tracer::tracer::EvmTracer;
+
+            // We need to follow the order when replaying the transactions.
+            // Block initialize happens first then apply_extrinsic.
+            Executive::initialize_block(header);
 
             // Apply the a subset of extrinsics: all the substrate-specific or ethereum
             // transactions that preceded the requested transaction.
@@ -1800,6 +1817,7 @@ impl_runtime_apis! {
         fn trace_block(
             extrinsics: Vec<<Block as BlockT>::Extrinsic>,
             known_transactions: Vec<H256>,
+            header: &<Block as BlockT>::Header,
         ) -> Result<
             (),
             sp_runtime::DispatchError,
@@ -1808,6 +1826,10 @@ impl_runtime_apis! {
 
             let mut config = <Runtime as pallet_evm::Config>::config().clone();
             config.estimate = true;
+
+            // We need to follow the order when replaying the transactions.
+            // Block initialize happens first then apply_extrinsic.
+            Executive::initialize_block(header);
 
             // Apply all extrinsics. Ethereum extrinsics are traced.
             for ext in extrinsics.into_iter() {

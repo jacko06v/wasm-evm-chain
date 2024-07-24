@@ -44,9 +44,17 @@ use astar_primitives::*;
 const GRANDPA_JUSTIFICATION_PERIOD: u32 = 512;
 
 /// Extra host functions
+#[cfg(feature = "runtime-benchmarks")]
 pub type HostFunctions = (
     // benchmarking host functions
     frame_benchmarking::benchmarking::HostFunctions,
+    // evm tracing host functions
+    moonbeam_primitives_ext::moonbeam_ext::HostFunctions,
+);
+
+/// Extra host functions
+#[cfg(not(feature = "runtime-benchmarks"))]
+pub type HostFunctions = (
     // evm tracing host functions
     moonbeam_primitives_ext::moonbeam_ext::HostFunctions,
 );
@@ -112,10 +120,11 @@ pub fn new_partial(
     let executor = sc_service::new_native_or_wasm_executor(&config);
 
     let (client, backend, keystore_container, task_manager) =
-        sc_service::new_full_parts::<Block, RuntimeApi, _>(
+    sc_service::new_full_parts_record_import::<Block, RuntimeApi, _>(
             config,
             telemetry.as_ref().map(|(_, telemetry)| telemetry.handle()),
             executor,
+            true,
         )?;
     let client = Arc::new(client);
     let telemetry = telemetry.map(|(worker, telemetry)| {
@@ -217,7 +226,11 @@ pub fn start_node(
             .expect("Genesis block exists; qed"),
         &config.chain_spec,
     );
-    let net_config = sc_network::config::FullNetworkConfiguration::new(&config.network);
+    let mut net_config = sc_network::config::FullNetworkConfiguration::new(&config.network);
+
+    let (grandpa_protocol_config, grandpa_notification_service) =
+        sc_consensus_grandpa::grandpa_peers_set_config(protocol_name.clone());
+    net_config.add_notification_protocol(grandpa_protocol_config);
 
     let (network, system_rpc_tx, tx_handler_controller, network_starter, sync_service) =
         sc_service::build_network(sc_service::BuildNetworkParams {
@@ -274,6 +287,7 @@ pub fn start_node(
         if ethapi_cmd.contains(&EthApiCmd::Debug) || ethapi_cmd.contains(&EthApiCmd::Trace) {
             tracing::spawn_tracing_tasks(
                 &evm_tracing_config,
+                config.prometheus_registry().cloned(),
                 tracing::SpawnTasksParams {
                     task_manager: &task_manager,
                     client: client.clone(),
@@ -522,6 +536,7 @@ pub fn start_node(
             link: grandpa_link,
             network,
             sync: Arc::new(sync_service),
+            notification_service: grandpa_notification_service,
             voting_rule: sc_consensus_grandpa::VotingRulesBuilder::default().build(),
             prometheus_registry,
             shared_voter_state: SharedVoterState::empty(),

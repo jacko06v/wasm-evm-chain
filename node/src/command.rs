@@ -153,6 +153,7 @@ pub fn run() -> Result<()> {
         Some(Subcommand::Benchmark(cmd)) => {
             use crate::benchmarking::*;
             use sp_keyring::Sr25519Keyring;
+            use sp_runtime::traits::HashingFor;
 
             let runner = cli.create_runner(cmd)?;
 
@@ -160,7 +161,9 @@ pub fn run() -> Result<()> {
                 BenchmarkCmd::Pallet(cmd) => {
                     
                         runner.sync_run(|config| {
-                            cmd.run::<local_runtime::Block, local::HostFunctions>(config)
+                            cmd.run::<HashingFor<local_runtime::Block>, local::HostFunctions>(
+                                config,
+                            )
                         })
                     
                 }

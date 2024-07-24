@@ -48,6 +48,8 @@ pallet-evm = { workspace = true }
 pallet-evm-precompile-assets-erc20 = { workspace = true }
 pallet-evm-precompile-dispatch = { workspace = true }
 
+[dev-dependencies]
+once_cell = { workspace = true }
 
 [features]
 default = ["std"]
@@ -87,10 +89,10 @@ runtime-benchmarks = [
 	"pallet-evm/runtime-benchmarks",
 	"pallet-evm-precompile-assets-erc20/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
-
 	"pallet-collective/runtime-benchmarks",
 	"pallet-membership/runtime-benchmarks",
 	"pallet-treasury/runtime-benchmarks",
+	"orml-oracle/runtime-benchmarks",
 ]
 try-runtime = [
 	"pallet-contracts/try-runtime",
