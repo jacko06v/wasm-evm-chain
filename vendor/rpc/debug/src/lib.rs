@@ -362,7 +362,7 @@ where
             .map_err(|e| internal_err(format!("Fail to read blockchain db: {:?}", e)))?
             .unwrap_or_default();
 
-             // Get DebugRuntimeApi version
+        // Get DebugRuntimeApi version
         let trace_api_version = if let Ok(Some(api_version)) =
             api.api_version::<dyn DebugRuntimeApi<B>>(parent_block_hash)
         {
@@ -401,6 +401,7 @@ where
                         reference_id, e
                     ))
                 })?;
+
             Ok(moonbeam_rpc_primitives_debug::Response::Block)
         };
 
@@ -562,6 +563,7 @@ where
                             }
                         }
                     };
+
                     result
                         .map_err(|e| {
                             internal_err(format!(

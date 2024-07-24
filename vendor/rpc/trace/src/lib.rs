@@ -456,19 +456,17 @@ where
 			let mut batch_expirations = FuturesUnordered::new();
 			let (blocking_tx, mut blocking_rx) =
 				mpsc::channel(blocking_permits.available_permits() * 2);
-
-            let metrics = if let Some(registry) = prometheus {
-                match Metrics::register(&registry) {
-                    Ok(metrics) => Some(metrics),
-                    Err(err) => {
-                        log::error!(target: "tracing", "Failed to register metrics {err:?}");
-                        None
-                    }
-                }
-            } else {
-                None
-            };
-
+			let metrics = if let Some(registry) = prometheus {
+				match Metrics::register(&registry) {
+					Ok(metrics) => Some(metrics),
+					Err(err) => {
+						log::error!(target: "tracing", "Failed to register metrics {err:?}");
+						None
+					}
+				}
+			} else {
+				None
+			};
 			// Contains the inner state of the cache task, excluding the pooled futures/channels.
 			// Having this object allow to refactor each event into its own function, simplifying
 			// the main loop.
@@ -479,7 +477,7 @@ where
 				cached_blocks: BTreeMap::new(),
 				batches: BTreeMap::new(),
 				next_batch_id: 0,
-                metrics,
+				metrics,
 				_phantom: Default::default(),
 			};
 
@@ -849,7 +847,7 @@ where
             })?
             .ok_or_else(|| format!("Could not find block {} when fetching extrinsics.", height))?;
 
-            // Get DebugRuntimeApi version
+        // Get DebugRuntimeApi version
         let trace_api_version = if let Ok(Some(api_version)) =
             api.api_version::<dyn DebugRuntimeApi<B>>(substrate_parent_hash)
         {
@@ -891,6 +889,7 @@ where
                         height, e
                     )
                 })?;
+
             Ok(moonbeam_rpc_primitives_debug::Response::Block)
         };
 
@@ -928,7 +927,6 @@ where
         Ok(traces)
     }
 }
-
 
 /// Prometheus metrics for tracing.
 #[derive(Clone)]
