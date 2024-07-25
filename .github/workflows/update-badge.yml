@@ -24,7 +24,7 @@ jobs:
         echo "::set-output name=version::$VERSION"
 
     - name: Generate version badge
-      uses: schneegans/dynamic-badges-action@@v1.7.0
+      uses: schneegans/dynamic-badges-action@v1.7.0
       with:
         auth: ${{ secrets.GITHUB_TOKEN }}
         label: version
