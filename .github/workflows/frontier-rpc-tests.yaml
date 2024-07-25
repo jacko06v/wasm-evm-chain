@@ -49,4 +49,4 @@ jobs:
         working-directory: frontier-tests
         run: npm run test
         env:
-          BINARY_PATH: ${{ github.workspace }}/target/release/astar-collator
+          BINARY_PATH: ${{ github.workspace }}/target/release/uomi
