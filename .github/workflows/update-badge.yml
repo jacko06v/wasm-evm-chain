@@ -1,0 +1,41 @@
+name: Update Version Badge
+
+on:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+    paths:
+      - 'node/Cargo.toml'
+      - '.github/workflows/update-badge.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Extract version from node/Cargo.toml
+      id: extract_version
+      run: |
+        VERSION=$(grep '^version' node/Cargo.toml | sed 's/version = "//;s/"//')
+        echo "::set-output name=version::$VERSION"
+
+    - name: Generate version badge
+      uses: schneegans/dynamic-badges-action@v1
+      with:
+        auth: ${{ secrets.GITHUB_TOKEN }}
+        label: version
+        message: ${{ steps.extract_version.outputs.version }}
+        color: blue
+        path: version-badge.svg
+
+    - name: Commit version badge
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add version-badge.svg
+        git commit -m 'Update version badge'
+        git push

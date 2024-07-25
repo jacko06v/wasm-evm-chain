@@ -8,6 +8,9 @@
 
 removed all parachains - keeped dev chain => solochain
 
+
+![Version](./version-badge.svg)
+
 ## if runned on an external server with public ip
 run: 
 ```
